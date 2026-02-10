@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Панель управления</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header" id="header">
+    <h1 class="header__title">Панель управления</h1>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs" id="navTabs">
+    <button class="nav-tabs__btn active" data-tab="products">Товары</button>
+    <button class="nav-tabs__btn" data-tab="availability">Наличие</button>
+    <button class="nav-tabs__btn" data-tab="orders">Заказы</button>
+    <button class="nav-tabs__btn" data-tab="metrics">Метрики</button>
+  </nav>
+
+  <!-- ================================================================== -->
+  <!-- PRODUCTS TAB -->
+  <!-- ================================================================== -->
+  <section class="tab-content active" id="tab-products">
+    <div class="section-header">
+      <h2 class="section-title">Управление товарами</h2>
+      <button class="btn btn--primary" id="btnAddProduct">+ Добавить товар</button>
+    </div>
+
+    <!-- Categories sub-section -->
+    <div class="subsection">
+      <div class="subsection-header">
+        <h3 class="subsection-title">Категории</h3>
+        <button class="btn btn--small btn--secondary" id="btnAddCategory">+ Категория</button>
+      </div>
+      <div id="categoriesList" class="categories-list">
+        <div class="loading">Загрузка...</div>
+      </div>
+    </div>
+
+    <!-- Category form modal -->
+    <div class="modal" id="categoryFormModal">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <h3 class="modal__title" id="categoryFormTitle">Добавить категорию</h3>
+        <form id="categoryForm" class="form">
+          <input type="hidden" id="categoryId">
+          <div class="form__group">
+            <label class="form__label" for="categoryName">Название</label>
+            <input class="form__input" type="text" id="categoryName" required placeholder="Название категории">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="categoryDescription">Описание</label>
+            <textarea class="form__input form__textarea" id="categoryDescription" placeholder="Описание (необязательно)"></textarea>
+          </div>
+          <div class="form__actions">
+            <button type="button" class="btn btn--secondary" id="btnCancelCategory">Отмена</button>
+            <button type="submit" class="btn btn--primary" id="btnSaveCategory">Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Products list -->
+    <div class="subsection">
+      <h3 class="subsection-title">Товары</h3>
+      <div class="filter-bar">
+        <label class="filter-bar__label" for="filterCategory">Категория:</label>
+        <select class="form__select" id="filterCategory">
+          <option value="">Все</option>
+        </select>
+      </div>
+      <div id="productsList" class="products-list">
+        <div class="loading">Загрузка...</div>
+      </div>
+    </div>
+
+    <!-- Product form modal -->
+    <div class="modal" id="productFormModal">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <h3 class="modal__title" id="productFormTitle">Добавить товар</h3>
+        <form id="productForm" class="form">
+          <input type="hidden" id="productId">
+          <div class="form__group">
+            <label class="form__label" for="productName">Название</label>
+            <input class="form__input" type="text" id="productName" required placeholder="Название товара">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="productDescription">Описание</label>
+            <textarea class="form__input form__textarea" id="productDescription" placeholder="Описание товара"></textarea>
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="productPrice">Цена (руб.)</label>
+            <input class="form__input" type="number" id="productPrice" required min="0" step="0.01" placeholder="0.00">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="productImageUrl">URL изображения</label>
+            <input class="form__input" type="url" id="productImageUrl" placeholder="https://example.com/image.jpg">
+          </div>
+          <div class="form__group">
+            <label class="form__label" for="productCategory">Категория</label>
+            <select class="form__select" id="productCategory" required>
+              <option value="">Выберите категорию</option>
+            </select>
+          </div>
+          <div class="form__actions">
+            <button type="button" class="btn btn--secondary" id="btnCancelProduct">Отмена</button>
+            <button type="submit" class="btn btn--primary" id="btnSaveProduct">Сохранить</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- AVAILABILITY TAB -->
+  <!-- ================================================================== -->
+  <section class="tab-content" id="tab-availability">
+    <div class="section-header">
+      <h2 class="section-title">Наличие товаров</h2>
+    </div>
+
+    <div class="filter-bar">
+      <label class="filter-bar__label" for="filterStore">Магазин:</label>
+      <select class="form__select" id="filterStore">
+        <option value="">Выберите магазин</option>
+      </select>
+    </div>
+
+    <div id="availabilityList" class="availability-list">
+      <div class="empty-state">Выберите магазин для просмотра наличия</div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- ORDERS TAB -->
+  <!-- ================================================================== -->
+  <section class="tab-content" id="tab-orders">
+    <div class="section-header">
+      <h2 class="section-title">Заказы</h2>
+      <button class="btn btn--small btn--secondary" id="btnRefreshOrders">Обновить</button>
+    </div>
+    <div id="ordersList" class="orders-list">
+      <div class="loading">Загрузка...</div>
+    </div>
+  </section>
+
+  <!-- ================================================================== -->
+  <!-- METRICS TAB -->
+  <!-- ================================================================== -->
+  <section class="tab-content" id="tab-metrics">
+    <div class="section-header">
+      <h2 class="section-title">Метрики</h2>
+      <button class="btn btn--small btn--secondary" id="btnRefreshMetrics">Обновить</button>
+    </div>
+
+    <!-- Stats cards -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card">
+        <span class="stat-card__label">Всего заказов</span>
+        <span class="stat-card__value" id="statTotalOrders">--</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__label">Выручка</span>
+        <span class="stat-card__value" id="statRevenue">--</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__label">Средний чек</span>
+        <span class="stat-card__value" id="statAvgOrder">--</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-card__label">Заказов сегодня</span>
+        <span class="stat-card__value" id="statTodayOrders">--</span>
+      </div>
+    </div>
+
+    <!-- Popular by views -->
+    <div class="subsection">
+      <h3 class="subsection-title">Популярные по просмотрам</h3>
+      <div id="popularByViews" class="ranked-list">
+        <div class="loading">Загрузка...</div>
+      </div>
+    </div>
+
+    <!-- Popular by orders -->
+    <div class="subsection">
+      <h3 class="subsection-title">Популярные по заказам</h3>
+      <div id="popularByOrders" class="ranked-list">
+        <div class="loading">Загрузка...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast notification container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

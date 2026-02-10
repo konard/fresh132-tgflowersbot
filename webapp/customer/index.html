@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Цветочный магазин</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="app-header">
+        <h1 class="app-title">Цветочный магазин</h1>
+        <button class="cart-btn" id="headerCartBtn" aria-label="Корзина">
+            <svg class="cart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="20" cy="21" r="1"/>
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+    </header>
+
+    <!-- Navigation tabs -->
+    <nav class="nav-tabs" id="navTabs">
+        <button class="nav-tab active" data-view="catalog">Каталог</button>
+        <button class="nav-tab" data-view="cart">Корзина</button>
+        <button class="nav-tab" data-view="checkout">Оформление</button>
+    </nav>
+
+    <!-- Main content area -->
+    <main class="content" id="content">
+
+        <!-- Catalog view -->
+        <section class="view" id="catalogView">
+            <div class="category-chips" id="categoryChips">
+                <!-- Category filter chips rendered by JS -->
+            </div>
+            <div class="loading" id="catalogLoading">
+                <div class="spinner"></div>
+                <p>Загрузка каталога...</p>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Product cards rendered by JS -->
+            </div>
+            <div class="empty-state" id="catalogEmpty" style="display:none;">
+                <p>Товары не найдены</p>
+            </div>
+        </section>
+
+        <!-- Product detail view -->
+        <section class="view" id="productDetailView" style="display:none;">
+            <div class="loading" id="productLoading">
+                <div class="spinner"></div>
+                <p>Загрузка товара...</p>
+            </div>
+            <div class="product-detail" id="productDetail">
+                <!-- Product detail rendered by JS -->
+            </div>
+        </section>
+
+        <!-- Cart view -->
+        <section class="view" id="cartView" style="display:none;">
+            <div class="loading" id="cartLoading" style="display:none;">
+                <div class="spinner"></div>
+                <p>Загрузка корзины...</p>
+            </div>
+            <div class="cart-content" id="cartContent">
+                <!-- Cart items rendered by JS -->
+            </div>
+            <div class="empty-state" id="cartEmpty" style="display:none;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="64" height="64" style="opacity:0.4;">
+                    <circle cx="9" cy="21" r="1"/>
+                    <circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                </svg>
+                <p>Корзина пуста</p>
+                <button class="btn btn-primary" id="goToCatalogBtn">Перейти в каталог</button>
+            </div>
+        </section>
+
+        <!-- Checkout view -->
+        <section class="view" id="checkoutView" style="display:none;">
+            <div class="checkout-content" id="checkoutContent">
+                <!-- Checkout form rendered by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Toast notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Error overlay -->
+    <div class="error-overlay" id="errorOverlay" style="display:none;">
+        <div class="error-card">
+            <p id="errorMessage">Произошла ошибка</p>
+            <button class="btn btn-primary" id="errorRetryBtn">Повторить</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
