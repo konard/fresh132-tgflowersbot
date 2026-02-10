@@ -5,3 +5,8 @@ __pycache__/
 venv/
 .pytest_cache/
 postgres_data/
+
+# Environment files (contain secrets like bot tokens)
+.env
+.env.local
+.env.*.local
