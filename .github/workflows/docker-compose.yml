@@ -1,0 +1,59 @@
+name: Docker Compose Validation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    name: Validate Docker Compose
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          echo "MAIN_BOT_TOKEN=test_token_main" > .env
+          echo "ADMIN_BOT_TOKEN=test_token_admin" >> .env
+
+      - name: Validate docker-compose configuration
+        run: docker compose config --quiet
+
+      - name: Build all services
+        run: docker compose build
+
+      - name: Start services
+        run: |
+          docker compose up -d
+          # Wait for services to be healthy
+          sleep 30
+
+      - name: Check service health
+        run: |
+          docker compose ps
+          # Check if postgres is healthy
+          docker compose exec -T postgres pg_isready -U flowers -d flowers
+          # Check if kafka is running
+          docker compose exec -T kafka kafka-broker-api-versions --bootstrap-server localhost:9092
+
+      - name: Test API endpoints
+        run: |
+          # Wait a bit more for services to fully start
+          sleep 10
+          # Test catalog service
+          curl -f http://localhost:8001/categories/ || exit 1
+          curl -f http://localhost:8001/products/ || exit 1
+          # Test order service
+          curl -f http://localhost:8002/orders/ || exit 1
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose logs
+
+      - name: Stop services
+        if: always()
+        run: docker compose down -v
