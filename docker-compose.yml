@@ -117,7 +117,7 @@ services:
       DATABASE_URL: postgresql+asyncpg://flowers:flowers@postgres:5432/flowers
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       TELEGRAM_BOT_TOKEN: ${MAIN_BOT_TOKEN}
-      WEBAPP_URL: http://nginx/customer
+      WEBAPP_URL: ${MAIN_WEBAPP_URL}
     networks:
       - flowers-network
 
@@ -137,7 +137,7 @@ services:
       DATABASE_URL: postgresql+asyncpg://flowers:flowers@postgres:5432/flowers
       KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       TELEGRAM_BOT_TOKEN: ${ADMIN_BOT_TOKEN}
-      WEBAPP_URL: http://nginx/admin
+      WEBAPP_URL: ${ADMIN_WEBAPP_URL}
     networks:
       - flowers-network
 
